@@ -4,10 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-import java.util.Objects;
 import java.util.logging.Logger;
-
-import static java.lang.Thread.*;
 
 public class TesteConexaoComBD {
 
@@ -18,13 +15,13 @@ public class TesteConexaoComBD {
 
     public static void main(String[] args) throws InterruptedException {
 
-        abriConexao();
+        abrirConexao();
 
-        inserirRegistro();
-
-        sleep(3000); // espera por 3 segundos
-
-        consultandoRegistro();
+//        inserirRegistro();
+//
+//        sleep(3000); // espera por 3 segundos
+//
+//        consultandoRegistro();
 
         fecharConexao();
 
@@ -32,28 +29,28 @@ public class TesteConexaoComBD {
 
     static void inserirRegistro(){
 
-        logger.info("Criando tabela ou inserindo registro");
-
-        Pessoa pessoa = new Pessoa("Caramboliudo");
-        entityManager.getTransaction().begin();
-        entityManager.persist(pessoa);
-        entityManager.getTransaction().commit();
-
-        logger.info("Registro inserido");
+//        logger.info("Criando tabela ou inserindo registro");
+//
+//        Pessoa pessoa = new Pessoa("Caramboliudo");
+//        entityManager.getTransaction().begin();
+//        entityManager.persist(pessoa);
+//        entityManager.getTransaction().commit();
+//
+//        logger.info("Registro inserido");
 
     }
 
     static void consultandoRegistro(){
 
-        Pessoa pessoa = entityManager.find(Pessoa.class, 1L);
-
-        if(Objects.isNull(pessoa))
-            logger.info("Tem parada errada aí irmão");
-        else
-            System.out.println(pessoa);
+//        Pessoa pessoa = entityManager.find(Pessoa.class, 1L);
+//
+//        if(Objects.isNull(pessoa))
+//            logger.info("Tem parada errada aí irmão");
+//        else
+//            System.out.println(pessoa);
     }
 
-    static void abriConexao(){
+    static void abrirConexao(){
         logger.info("---------- Abrindo conexao ----------");
 
         entityManager = factory.createEntityManager();
