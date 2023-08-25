@@ -1,20 +1,19 @@
-package org.creditoRural.domain.customConstraint;
+package org.creditoRural.customConstraint;
 
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 @Target({ElementType.FIELD})
 @Constraint(validatedBy = {CepValidator.class})
 @Retention(RetentionPolicy.RUNTIME)
+//@ReportAsSingleViolation
+//@Documented
 public @interface Cep {
 
-    String message() default "Endereco invalido";
+    String message() default "Cep não encontrado !";
 
     Class<?>[] groups() default {};
 

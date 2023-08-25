@@ -1,7 +1,11 @@
 package org.creditoRural.domain;
 
 import jakarta.persistence.*;
-import org.creditoRural.domain.customConstraint.Cep;
+import org.creditoRural.customConstraint.Cep;
+import org.creditoRural.exceptions.BemExistenteException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "propriedades")
@@ -21,17 +25,25 @@ public class Propriedade {
     @JoinColumn(name = "pessoa_id" )
     private Pessoa pessoa;
 
-    //TODO criar anotacao customizada de cep válido - Feito
+    @OneToMany(mappedBy = "propriedade", fetch = FetchType.LAZY)
+    private List<Bem> bens = new ArrayList<>();
+
+    @OneToMany(mappedBy = "propriedade")
+    private List<Projeto> projetos = new ArrayList<>();
+
+
     @Column(nullable = false)
     @Cep
     private String cep;
 
     public Propriedade() {}
 
-    public Propriedade(String regiao, String nome, Pessoa pessoa, String cep) {
+    public Propriedade(String regiao, String nome, Pessoa pessoa, List<Bem> bens, List<Projeto> projetos, String cep) {
         this.regiao = regiao;
         this.nome = nome;
         this.pessoa = pessoa;
+        this.bens = bens;
+        this.projetos = projetos;
         this.cep = cep;
     }
 
@@ -75,13 +87,51 @@ public class Propriedade {
         this.cep = cep;
     }
 
+    public List<Projeto> getProjetos() {
+        return projetos;
+    }
+
+    public void setProjetos(List<Projeto> projetos) {
+        this.projetos = projetos;
+    }
+
+    public void adicionarBem(Bem bem){
+
+        if(bem == null || this.bens.contains(bem)){
+            // TODO Nome nao adequado para exceção
+            throw new BemExistenteException();
+        }
+
+        this.getBens().add(bem);
+
+    }
+
+    public void adicionarProjeto(Projeto projeto){
+        // TODO personalizar excecao
+        if(projeto == null || this.projetos.contains(projeto))
+            throw new RuntimeException();
+
+        this.getProjetos().add(projeto);
+
+    }
+
+    public List<Bem> getBens() {
+        return bens;
+    }
+
+    public void setBens(List<Bem> bens) {
+        this.bens = bens;
+    }
+
     @Override
     public String toString() {
         return "Propriedade{" +
                 "id=" + id +
+                ", cep='" + cep + '\'' +
                 ", regiao='" + regiao + '\'' +
                 ", nome='" + nome + '\'' +
                 ", pessoa=" + pessoa +
+                ", bens=" + bens +
                 '}';
     }
 }

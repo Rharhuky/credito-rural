@@ -1,4 +1,4 @@
-package org.creditoRural.domain.customConstraint;
+package org.creditoRural.customConstraint;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

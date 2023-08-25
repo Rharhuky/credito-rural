@@ -26,7 +26,7 @@ public class Pessoa {
     private String profissao;
 
     @Column(nullable = false, unique = true)
-    @CPF
+//    @CPF
     private String cpf;
 
     @Column

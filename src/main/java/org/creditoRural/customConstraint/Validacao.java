@@ -1,4 +1,4 @@
-package org.creditoRural.domain.customConstraint;
+package org.creditoRural.customConstraint;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -21,7 +21,7 @@ public class Validacao {
 
     }
 
-    public static <T> Set<ConstraintViolation<T>> validateEntity(T entidade){
+    public static <T> Set<ConstraintViolation<T>> validateEntity(T entidade){ //BeanValidationEventListener.java
         return validator.validate(entidade);
 
     }

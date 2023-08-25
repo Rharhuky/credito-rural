@@ -7,4 +7,6 @@ public class PropriedadeDAO extends DAO<Propriedade>{
     public PropriedadeDAO() {
         super(Propriedade.class);
     }
+
+
 }
