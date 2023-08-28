@@ -2,14 +2,14 @@ package org.creditoRural.domain;
 
 import jakarta.persistence.*;
 import org.creditoRural.customConstraint.Cep;
-import org.creditoRural.exceptions.BemExistenteException;
+import org.creditoRural.exceptions.BemException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "propriedades")
-public class Propriedade {
+public class Propriedade extends Entidade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class Propriedade {
     @JoinColumn(name = "pessoa_id" )
     private Pessoa pessoa;
 
-    @OneToMany(mappedBy = "propriedade", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "propriedade", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Bem> bens = new ArrayList<>();
 
     @OneToMany(mappedBy = "propriedade")
@@ -60,6 +60,8 @@ public class Propriedade {
     }
 
     public void setRegiao(String regiao) {
+        if(argIsNull(regiao))
+            return;
         this.regiao = regiao;
     }
 
@@ -68,6 +70,8 @@ public class Propriedade {
     }
 
     public void setNome(String nome) {
+        if(argIsNull(nome))
+            return;
         this.nome = nome;
     }
 
@@ -76,6 +80,8 @@ public class Propriedade {
     }
 
     public void setPessoa(Pessoa pessoa) {
+        if(argIsNull(pessoa))
+            return;
         this.pessoa = pessoa;
     }
 
@@ -84,6 +90,8 @@ public class Propriedade {
     }
 
     public void setCep(String cep) {
+        if(argIsNull(cep))
+            return;
         this.cep = cep;
     }
 
@@ -99,7 +107,7 @@ public class Propriedade {
 
         if(bem == null || this.bens.contains(bem)){
             // TODO Nome nao adequado para exceção
-            throw new BemExistenteException();
+            throw new BemException();
         }
 
         this.getBens().add(bem);
@@ -130,7 +138,6 @@ public class Propriedade {
                 ", cep='" + cep + '\'' +
                 ", regiao='" + regiao + '\'' +
                 ", nome='" + nome + '\'' +
-                ", pessoa=" + pessoa +
                 ", bens=" + bens +
                 '}';
     }

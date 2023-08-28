@@ -6,6 +6,11 @@ import jakarta.validation.Payload;
 
 import java.lang.annotation.*;
 
+/**
+ * Anotação que verifica a existência de um CEP informado em um campo marcado com esta.
+ * @since 2023 - brincando com JPA
+ * @author rharhuandrew
+ */
 @Target({ElementType.FIELD})
 @Constraint(validatedBy = {CepValidator.class})
 @Retention(RetentionPolicy.RUNTIME)

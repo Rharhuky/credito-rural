@@ -13,7 +13,6 @@ public class Agente {
     private String nome;
     //TODO ? AREA DE ATUACAO DE UM AGENTE :MANY TO MANY
 
-
     public Agente() {}
 
     public Agente(String nome) {

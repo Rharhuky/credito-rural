@@ -15,8 +15,7 @@ public class Projeto {
     @Column(updatable = false, nullable = false)
     private LocalDateTime localDateTime;
 
-    @ManyToOne
-    @JoinColumn(name = "atividade_id")
+    @OneToOne(mappedBy = "projeto")
     private Atividade atividade;
 
     @ManyToOne
@@ -64,5 +63,14 @@ public class Projeto {
 
     public void setPropriedade(Propriedade propriedade) {
         this.propriedade = propriedade;
+    }
+
+    @Override
+    public String toString() {
+        return "Projeto{" +
+                "id=" + id +
+                ", localDateTime=" + localDateTime +
+                ", atividade=" + atividade +
+                '}';
     }
 }

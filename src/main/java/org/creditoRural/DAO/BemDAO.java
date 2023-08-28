@@ -2,6 +2,7 @@ package org.creditoRural.DAO;
 
 import jakarta.persistence.TypedQuery;
 import org.creditoRural.domain.Bem;
+import org.creditoRural.domain.DTO.DTO;
 import org.creditoRural.domain.Propriedade;
 import org.creditoRural.domain.enums.TipoBem;
 
@@ -18,6 +19,16 @@ public class BemDAO extends DAO<Bem> {
 
         super(Bem.class);
 
+    }
+
+    @Override
+    public DAO<Bem> updateById(Long id, DTO<Bem> anotherEntity) {
+        return null;
+    }
+
+    @Override
+    protected Bem map(Bem entityToMap, DTO entityDTO) {
+        return null;
     }
 
     /**
@@ -41,6 +52,7 @@ public class BemDAO extends DAO<Bem> {
 //        entityManager.getTransaction().commit();
 
             openConnexion();
+            //
 
             Propriedade propriedade = propriedadeDAO.findById(propriedadeId);
 
@@ -52,7 +64,6 @@ public class BemDAO extends DAO<Bem> {
             persist(bem)
                     .commitTransaction()
                     .closeConnexion();
-
 
         return this;
 

@@ -1,14 +1,17 @@
 package org.creditoRural.domain;
 
 import jakarta.persistence.*;
+import org.creditoRural.exceptions.EntidadeNaoExisteException;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "pessoas")
-public class Pessoa {
+public class Pessoa extends Entidade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +36,7 @@ public class Pessoa {
     private String celular;
 
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL)
-    private List<Propriedade> propriedade;
+    private List<Propriedade> propriedades = new ArrayList<>();
 
 
     public Pessoa(String nome, LocalDate dataNascimento, String nomeConjugue, String profissao, String cpf, String celular) {
@@ -60,6 +63,8 @@ public class Pessoa {
     }
 
     public void setNome(String nome) {
+        if(argIsNull(nome))
+            return;
         this.nome = nome;
     }
 
@@ -68,6 +73,8 @@ public class Pessoa {
     }
 
     public void setDataNascimento(LocalDate dataNascimento) {
+        if(argIsNull(dataNascimento))
+            return;
         this.dataNascimento = dataNascimento;
     }
 
@@ -76,6 +83,9 @@ public class Pessoa {
     }
 
     public void setNomeConjugue(String nomeConjugue) {
+        if(argIsNull(nomeConjugue))
+            return;
+
         this.nomeConjugue = nomeConjugue;
     }
 
@@ -84,6 +94,9 @@ public class Pessoa {
     }
 
     public void setProfissao(String profissao) {
+        if(argIsNull(profissao))
+            return;
+
         this.profissao = profissao;
     }
 
@@ -92,6 +105,9 @@ public class Pessoa {
     }
 
     public void setCpf(String cpf) {
+        if(argIsNull(cpf))
+            return;
+
         this.cpf = cpf;
     }
 
@@ -100,7 +116,25 @@ public class Pessoa {
     }
 
     public void setCelular(String celular) {
+        if(argIsNull(celular))
+            return;
         this.celular = celular;
+    }
+
+    public void adicionarPropriedade(Propriedade propriedade){
+
+        if(this.getPropriedades().contains(propriedade))
+            throw new EntidadeNaoExisteException();
+
+        this.getPropriedades().add(propriedade);
+    }
+
+    public List<Propriedade> getPropriedades() {
+        return propriedades;
+    }
+
+    public void setPropriedade(List<Propriedade> propriedades) {
+        this.propriedades = propriedades;
     }
 
     @Override

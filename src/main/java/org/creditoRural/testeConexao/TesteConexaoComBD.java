@@ -27,7 +27,7 @@ public class TesteConexaoComBD {
 
     }
 
-    static void inserirRegistro(){
+    static void inserirRegistro() {
 
 //        logger.info("Criando tabela ou inserindo registro");
 //
@@ -40,7 +40,7 @@ public class TesteConexaoComBD {
 
     }
 
-    static void consultandoRegistro(){
+    static void consultandoRegistro() {
 
 //        Pessoa pessoa = entityManager.find(Pessoa.class, 1L);
 //
@@ -50,13 +50,13 @@ public class TesteConexaoComBD {
 //            System.out.println(pessoa);
     }
 
-    static void abrirConexao(){
+    static void abrirConexao() {
         logger.info("---------- Abrindo conexao ----------");
 
         entityManager = factory.createEntityManager();
     }
 
-    static void fecharConexao(){
+    static void fecharConexao() {
 
         factory.close();
         entityManager.close();

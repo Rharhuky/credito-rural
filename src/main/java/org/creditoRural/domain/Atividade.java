@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import org.creditoRural.domain.enums.TipoAtividade;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name = "atividades")
 public class Atividade {
@@ -24,8 +21,9 @@ public class Atividade {
     @NotEmpty
     private String objetivo;
 
-    @OneToMany(mappedBy = "atividade")
-    private List<Projeto> projetosAssociados = new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name = "projeto_id")
+    private Projeto projeto;
 
 
 
@@ -58,6 +56,14 @@ public class Atividade {
 
     public void setObjetivo(String objetivo) {
         this.objetivo = objetivo;
+    }
+
+    public Projeto getProjeto() {
+        return projeto;
+    }
+
+    public void setProjeto(Projeto projeto) {
+        this.projeto = projeto;
     }
 
     @Override
