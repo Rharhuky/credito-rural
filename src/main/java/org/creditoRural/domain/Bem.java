@@ -5,7 +5,7 @@ import org.creditoRural.domain.enums.TipoBem;
 
 @Entity
 @Table(name = "bens")
-public class Bem {
+public class Bem extends Entidade{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +18,7 @@ public class Bem {
     @Column
     private Double preco;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "propriedade_id")
     private Propriedade propriedade;
 
@@ -43,6 +43,8 @@ public class Bem {
     }
 
     public void setTipo(TipoBem tipo) {
+        if(argIsNull(tipo))
+            return;
         this.tipo = tipo;
     }
 
@@ -51,6 +53,8 @@ public class Bem {
     }
 
     public void setPreco(Double preco) {
+        if(argIsNull(preco))
+            return;
         this.preco = preco;
     }
 
@@ -59,6 +63,8 @@ public class Bem {
     }
 
     public void setPropriedade(Propriedade propriedade) {
+        if(argIsNull(propriedade))
+            return;
         this.propriedade = propriedade;
     }
 

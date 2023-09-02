@@ -3,7 +3,6 @@ package org.creditoRural.DAO;
 import org.creditoRural.domain.DTO.DTO;
 import org.creditoRural.domain.DTO.PessoaDTO;
 import org.creditoRural.domain.Pessoa;
-import org.creditoRural.domain.Propriedade;
 
 public class PessoaDAO extends DAO<Pessoa>{
 

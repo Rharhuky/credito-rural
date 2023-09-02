@@ -1,12 +1,9 @@
 package org.creditoRural.DAO;
 
-import jakarta.persistence.TypedQuery;
 import org.creditoRural.domain.Bem;
+import org.creditoRural.domain.DTO.BemDTO;
 import org.creditoRural.domain.DTO.DTO;
 import org.creditoRural.domain.Propriedade;
-import org.creditoRural.domain.enums.TipoBem;
-
-import java.util.List;
 
 /**
  * DAO para classe Bem.
@@ -23,16 +20,38 @@ public class BemDAO extends DAO<Bem> {
 
     @Override
     public DAO<Bem> updateById(Long id, DTO<Bem> anotherEntity) {
-        return null;
+
+        Bem bem = super.findById(id);
+        super.detach(bem);
+        Bem bemAtualizado = map(bem, anotherEntity);
+
+        super   .update(bem);
+
+
+        return this;
+
     }
 
     @Override
     protected Bem map(Bem entityToMap, DTO entityDTO) {
-        return null;
+
+        BemDTO dto = (BemDTO) entityDTO;
+        entityToMap.setTipo(dto.getTipo());
+        entityToMap.setPreco(dto.getPreco());
+
+        if(dto.getPropriedadeId() != null){
+
+            this.propriedadeDAO = new PropriedadeDAO();
+            Propriedade novaPropriedade = propriedadeDAO.findById(dto.getPropriedadeId());
+            entityToMap.setPropriedade(novaPropriedade);
+
+        }
+
+        return entityToMap;
     }
 
     /**
-     * Método ideal para persistir uma entidade Bem que tem relação com uma entidade Propriedade já existente.
+     * Método ideal para persistir uma entidade Bem relaciona a uma entidade Propriedade já existente.
      * @param bem
      * @param propriedadeId
      * @return DAO
@@ -41,27 +60,11 @@ public class BemDAO extends DAO<Bem> {
 
         this.propriedadeDAO = new PropriedadeDAO();
 
-//        entityManager.getTransaction().begin();
-//
-//        Propriedade propriedade = entityManager.find(Propriedade.class, propriedadeId);
-//        System.out.println(propriedade);
-//        bem.setPropriedade(propriedade);
-//        propriedade.adicionarBem(bem);
-//
-//        entityManager.persist(bem);
-//        entityManager.getTransaction().commit();
-
-            openConnexion();
-            //
-
             Propriedade propriedade = propriedadeDAO.findById(propriedadeId);
-
-            openTransaction();
-
             propriedade.adicionarBem(bem);
             bem.setPropriedade(propriedade);
 
-            persist(bem)
+            super.persist(bem)
                     .commitTransaction()
                     .closeConnexion();
 

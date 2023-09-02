@@ -24,6 +24,11 @@ public class PessoaDTO implements DTO<Pessoa>{
 
     }
 
+    public static Builder getBuilder(){
+        return new Builder();
+    }
+
+
     public static class Builder{
 
         private String nome;

@@ -7,11 +7,8 @@ import jakarta.persistence.TypedQuery;
 import jakarta.validation.ConstraintViolation;
 import org.creditoRural.customConstraint.Validacao;
 import org.creditoRural.domain.DTO.DTO;
-import org.creditoRural.domain.Pessoa;
-import org.creditoRural.domain.Propriedade;
 import org.creditoRural.exceptions.EntidadeNaoExisteException;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -65,8 +62,15 @@ public abstract class DAO<T>  {
 
     public DAO<T> commitTransaction(){
 
-        entityManager.getTransaction().commit();
-        System.out.println("HOPE???????w");
+        try {
+            entityManager.getTransaction().commit();
+
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            entityManager.getTransaction().rollback();
+        }
+
         return this;
 
     }
@@ -74,8 +78,6 @@ public abstract class DAO<T>  {
 
         Set<ConstraintViolation<T>> constraints = Validacao.validateEntity(entity);
         if( constraints.isEmpty() ){
-
-            System.out.println("Persiste essa porra!");
             entityManager.persist(entity);
         }
         else {
@@ -86,12 +88,16 @@ public abstract class DAO<T>  {
 
     }
 
-    public T findById(Long id){
-        
-       if(Objects.isNull(entity))
-           throw new RuntimeException("CADE O PIX???????????");
+    public T findById(Long id){//problem??? TODO
 
-       return entityManager.find(entity, id);
+        if(Objects.isNull(entity))
+            throw new RuntimeException("Entidade nao informada");
+        T aEntity = entityManager.find(entity, id);
+
+        if(Objects.isNull(aEntity))
+            throw new EntidadeNaoExisteException(entity.getName(), id);
+
+        return aEntity;
     }
 
     public List<T> findAll(){
@@ -115,6 +121,11 @@ public abstract class DAO<T>  {
         return this;
     }
 
+    /**
+     * Merge
+     * @param entityToMerge
+     * @return
+     */
     protected DAO<T> update(T entityToMerge){
         entityManager.merge(entityToMerge);
         return this;
@@ -131,17 +142,28 @@ public abstract class DAO<T>  {
     // DELETE - cascade ALLL
 
     /**
-     * Método que delete uma entidade a partir do seu id...
+     * Método que deleta uma entidade a partir do seu id...
      */
     public DAO<T> deleteById(Long id){
 
         T aEntity = this.findById(id);
 
         if(Objects.isNull(aEntity))
-            throw new EntidadeNaoExisteException();
+            throw new EntidadeNaoExisteException(entity.getName(), id);
 
         entityManager.remove(aEntity);
 
+        return this;
+    }
+
+    /**
+     * Deletar todos registros de uma entidade T.
+     * @return DAO
+     */
+    public DAO<T> deleteAll(){
+
+        List<T> entities = this.findAll();
+        entities.forEach((anEntity) -> entityManager.remove(anEntity));
         return this;
     }
 

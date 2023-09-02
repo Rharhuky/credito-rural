@@ -1,6 +1,7 @@
 package org.creditoRural.DAO;
 
 import org.creditoRural.domain.Atividade;
+import org.creditoRural.domain.DTO.AtividadeDTO;
 import org.creditoRural.domain.DTO.DTO;
 
 public class AtividadeDAO extends DAO<Atividade>{
@@ -11,13 +12,23 @@ public class AtividadeDAO extends DAO<Atividade>{
 
     @Override
     public DAO<Atividade> updateById(Long id, DTO<Atividade> anotherEntity) {
-        return null;
+
+        Atividade atv = super.findById(id);
+        super.detach(atv);
+        this.map(atv, anotherEntity);
+        super.update(atv);
+        return this;
+
     }
 
     @Override
     protected Atividade map(Atividade entityToMap, DTO entityDTO) {
-        return null;
-    }
 
+        AtividadeDTO dto = (AtividadeDTO) entityDTO;
+        entityToMap.setObjetivo(dto.getObjetivo());
+        entityToMap.setTipoAtividade(dto.getTipoAtividade());
+        return entityToMap;
+
+    }
 
 }

@@ -1,8 +1,16 @@
 package org.creditoRural.exceptions;
 
+import org.creditoRural.domain.Entidade;
+
 public class EntidadeNaoExisteException extends RuntimeException{
 
-    public EntidadeNaoExisteException() {
-        super("Tem parada erra aí irmão!!!");
+    public EntidadeNaoExisteException(String classe, Object id ) {
+        super("Não há ocorrências em " +
+                classe +
+                " de id" + id);
+
+
     }
+
+
 }

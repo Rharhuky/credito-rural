@@ -2,6 +2,9 @@ package org.creditoRural.domain;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "agentes")
 public class Agente {
@@ -10,8 +13,12 @@ public class Agente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToMany(mappedBy = "agente", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
+
+
     private String nome;
-    //TODO ? AREA DE ATUACAO DE UM AGENTE :MANY TO MANY
+
 
     public Agente() {}
 
@@ -33,6 +40,14 @@ public class Agente {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public List<Avaliacao> getAvaliacoes() {
+        return avaliacoes;
+    }
+
+    public void setAvaliacoes(List<Avaliacao> avaliacoes) {
+        this.avaliacoes = avaliacoes;
     }
 
     @Override

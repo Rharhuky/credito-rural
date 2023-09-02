@@ -28,7 +28,7 @@ public class Propriedade extends Entidade {
     @OneToMany(mappedBy = "propriedade", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Bem> bens = new ArrayList<>();
 
-    @OneToMany(mappedBy = "propriedade")
+    @OneToMany(mappedBy = "propriedade", cascade = CascadeType.ALL)
     private List<Projeto> projetos = new ArrayList<>();
 
 
@@ -106,7 +106,6 @@ public class Propriedade extends Entidade {
     public void adicionarBem(Bem bem){
 
         if(bem == null || this.bens.contains(bem)){
-            // TODO Nome nao adequado para exceção
             throw new BemException();
         }
 
@@ -115,9 +114,8 @@ public class Propriedade extends Entidade {
     }
 
     public void adicionarProjeto(Projeto projeto){
-        // TODO personalizar excecao
-        if(projeto == null || this.projetos.contains(projeto))
-            throw new RuntimeException();
+        if(projeto == null || this.getProjetos().contains(projeto))
+            throw new RuntimeException("Muita treta");
 
         this.getProjetos().add(projeto);
 
@@ -135,10 +133,11 @@ public class Propriedade extends Entidade {
     public String toString() {
         return "Propriedade{" +
                 "id=" + id +
-                ", cep='" + cep + '\'' +
                 ", regiao='" + regiao + '\'' +
                 ", nome='" + nome + '\'' +
+                ", pessoa=" + pessoa +
                 ", bens=" + bens +
+                ", cep='" + cep + '\'' +
                 '}';
     }
 }

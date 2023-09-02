@@ -1,13 +1,11 @@
 package org.creditoRural.domain;
 
 import jakarta.persistence.*;
-import org.creditoRural.exceptions.EntidadeNaoExisteException;
-import org.hibernate.validator.constraints.br.CPF;
+import org.creditoRural.exceptions.EntidadeExistenteException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "pessoas")
@@ -124,11 +122,12 @@ public class Pessoa extends Entidade {
     public void adicionarPropriedade(Propriedade propriedade){
 
         if(this.getPropriedades().contains(propriedade))
-            throw new EntidadeNaoExisteException();
+            throw new EntidadeExistenteException();
 
         this.getPropriedades().add(propriedade);
     }
 
+//    @Transactional
     public List<Propriedade> getPropriedades() {
         return propriedades;
     }

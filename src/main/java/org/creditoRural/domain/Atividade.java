@@ -1,28 +1,24 @@
 package org.creditoRural.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import org.creditoRural.domain.enums.TipoAtividade;
 
 @Entity
 @Table(name = "atividades")
-public class Atividade {
+public class Atividade extends Entidade{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @NotEmpty
     @Column
     private TipoAtividade tipoAtividade;
 
     @Column(nullable = false)
-    @NotEmpty
     private String objetivo;
 
-    @OneToOne
-    @JoinColumn(name = "projeto_id")
+    @OneToOne(mappedBy = "atividade", cascade = {CascadeType.PERSIST})
     private Projeto projeto;
 
 
@@ -47,6 +43,8 @@ public class Atividade {
     }
 
     public void setTipoAtividade(TipoAtividade tipoAtividade) {
+        if(argIsNull(tipoAtividade))
+            return;
         this.tipoAtividade = tipoAtividade;
     }
 
@@ -55,6 +53,8 @@ public class Atividade {
     }
 
     public void setObjetivo(String objetivo) {
+        if(argIsNull(objetivo))
+            return ;
         this.objetivo = objetivo;
     }
 

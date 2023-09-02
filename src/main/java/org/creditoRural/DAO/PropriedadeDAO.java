@@ -62,7 +62,7 @@ public class PropriedadeDAO extends DAO<Propriedade>{
     }
 
     /**
-     * Persistir para uma pessoa já existente
+     * Persistir para uma pessoa já existente.
      * @param propriedade
      * @param idPessoa
      * @return
@@ -78,10 +78,7 @@ public class PropriedadeDAO extends DAO<Propriedade>{
         pessoa.adicionarPropriedade(propriedade);
         propriedade.setPessoa(pessoa);
 
-        super.persist(propriedade)
-                .commitTransaction()
-                .closeConnexion();
-
+        super.persist(propriedade);
         return this;
 
     }
