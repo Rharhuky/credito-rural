@@ -53,49 +53,53 @@ public abstract class DAO<T>  {
         return this;
     }
 
-    public DAO<T> openTransaction(){
+    protected DAO<T> openTransaction(){
 
         entityManager.getTransaction().begin();
         return this;
 
     }
 
-    public DAO<T> commitTransaction(){
+    // private ???
+    private DAO<T> commitTransaction(){
 
-        try {
-            entityManager.getTransaction().commit();
-
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            entityManager.getTransaction().rollback();
-        }
+        entityManager.getTransaction().commit();
 
         return this;
 
     }
     public DAO<T> persist(T entity){
+        openTransaction();
 
         Set<ConstraintViolation<T>> constraints = Validacao.validateEntity(entity);
         if( constraints.isEmpty() ){
-            entityManager.persist(entity);
+            try{
+
+                entityManager.persist(entity);
+                commitTransaction();
+
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                System.out.println(e.getMessage());
+            }
         }
-        else {
+
+        else
             constraints.forEach((exception) -> System.out.println(exception.getMessage()));
-        }
 
         return this;
 
     }
 
-    public T findById(Long id){//problem??? TODO
+    public T findById(Long id) {//problem??? TODO
 
         if(Objects.isNull(entity))
             throw new RuntimeException("Entidade nao informada");
         T aEntity = entityManager.find(entity, id);
 
         if(Objects.isNull(aEntity))
-            throw new EntidadeNaoExisteException(entity.getName(), id);
+            throw new EntidadeNaoExisteException(entity.getSimpleName(), id);
 
         return aEntity;
     }
@@ -128,6 +132,7 @@ public abstract class DAO<T>  {
      */
     protected DAO<T> update(T entityToMerge){
         entityManager.merge(entityToMerge);
+        commitTransaction();
         return this;
     }
 
@@ -148,11 +153,14 @@ public abstract class DAO<T>  {
 
         T aEntity = this.findById(id);
 
-        if(Objects.isNull(aEntity))
+        if(Objects.isNull(aEntity)) {
             throw new EntidadeNaoExisteException(entity.getName(), id);
+        }
 
+        openTransaction();
         entityManager.remove(aEntity);
-
+        commitTransaction();
+        System.out.println("FOII??");
         return this;
     }
 
@@ -163,9 +171,21 @@ public abstract class DAO<T>  {
     public DAO<T> deleteAll(){
 
         List<T> entities = this.findAll();
+        openTransaction();
         entities.forEach((anEntity) -> entityManager.remove(anEntity));
+        commitTransaction();
         return this;
     }
+
+    protected List<T> query(String nameQuery, Object field, Object fieldValue) {
+        TypedQuery<T> aQuery = entityManager.createNamedQuery(nameQuery, entity);
+        aQuery.setParameter(field.toString(), fieldValue); // TODO
+
+        return aQuery.getResultList();
+
+
+    }
+
 
 
 }

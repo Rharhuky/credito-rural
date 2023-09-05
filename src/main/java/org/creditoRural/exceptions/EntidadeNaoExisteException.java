@@ -7,7 +7,7 @@ public class EntidadeNaoExisteException extends RuntimeException{
     public EntidadeNaoExisteException(String classe, Object id ) {
         super("Não há ocorrências em " +
                 classe +
-                " de id" + id);
+                " de id " + id);
 
 
     }

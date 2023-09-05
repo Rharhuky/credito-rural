@@ -18,7 +18,7 @@ public class Atividade extends Entidade{
     @Column(nullable = false)
     private String objetivo;
 
-    @OneToOne(mappedBy = "atividade", cascade = {CascadeType.PERSIST})
+    @OneToOne(mappedBy = "atividade", cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     private Projeto projeto;
 
 

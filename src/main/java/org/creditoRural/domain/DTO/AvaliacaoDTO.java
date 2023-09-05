@@ -4,27 +4,27 @@ import org.creditoRural.domain.Avaliacao;
 
 public class AvaliacaoDTO implements DTO<Avaliacao> {
 
-    private Long agenteId;
-    private Long projetoId;
+    private Boolean deferido;
+    private Double valor;
 
-    public AvaliacaoDTO(Builder builder){
-        this.agenteId = builder.agenteId;
-        this.projetoId = builder.projetoId;
+    public AvaliacaoDTO(Builder builder) {
+        this.deferido = builder.deferido;
+        this.valor = builder.valor;
     }
-
 
     public static class Builder {
 
-        private Long agenteId;
-        private Long projetoId;
+        private Boolean deferido;
+        private Double valor;
 
-        public Builder setAgenteId(Long agenteId) {
-            this.agenteId = agenteId;
+
+        public Builder setDeferido(Boolean deferido) {
+            this.deferido = deferido;
             return this;
         }
 
-        public Builder setProjetoId(Long projetoId) {
-            this.projetoId = projetoId;
+        public Builder setValor(Double valor) {
+            this.valor = valor;
             return this;
         }
 
@@ -33,11 +33,11 @@ public class AvaliacaoDTO implements DTO<Avaliacao> {
         }
     }
 
-    public Long getAgenteId() {
-        return agenteId;
+    public Boolean getDeferido() {
+        return deferido;
     }
 
-    public Long getProjetoId() {
-        return projetoId;
+    public Double getValor() {
+        return valor;
     }
 }

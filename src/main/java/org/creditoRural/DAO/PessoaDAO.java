@@ -1,5 +1,6 @@
 package org.creditoRural.DAO;
 
+import jakarta.persistence.TypedQuery;
 import org.creditoRural.domain.DTO.DTO;
 import org.creditoRural.domain.DTO.PessoaDTO;
 import org.creditoRural.domain.Pessoa;
@@ -39,5 +40,10 @@ public class PessoaDAO extends DAO<Pessoa>{
 
     }
 
+    public Pessoa findPessoaByCPF(String cpfValue){
+
+        return super.query("findPessoaByCPF", "cpf", cpfValue).get(0);
+
+    }
 
 }

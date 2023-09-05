@@ -5,6 +5,7 @@
              version="2.2">
 
     <persistence-unit name="creditoRural">
+        <mapping-file>META-INF/querys.xml</mapping-file>
         <properties>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres?useTimezone=true&amp;serverTimezone=UTC" />
             <property name="jakarta.persistence.jdbc.user" value="postgres" />

@@ -16,69 +16,121 @@ public class AvaliacaoDAO extends DAO<Avaliacao> {
         super(Avaliacao.class);
     }
 
+    /**
+     * Meio diferenciado
+     * @param agenteId projetoId
+     * @return DAO
+     */
+    public DAO<Avaliacao> persist(Long agenteId, Long projetoId) {
 
-    @Override
-    protected Avaliacao map(Avaliacao entityToMap, DTO entityDTO) {
+        this.agenteDAO = new AgenteDAO();
+        this.projetoDAO = new ProjetoDAO();
 
-        AvaliacaoDTO dto = (AvaliacaoDTO) entityDTO;
+        Agente agente = agenteDAO.findById(agenteId);
+        Projeto projeto = projetoDAO.findById(projetoId);
 
-        AvaliacaoId novoId = entityToMap.getId();
+        AvaliacaoId id = new AvaliacaoId();
+        id.setProjetoId(projetoId);
+        id.setProjetoId(agenteId);
 
-        Long agenteId = dto.getAgenteId();
-        Long projetoId = dto.getProjetoId();
+        Avaliacao avaliacao = new Avaliacao();
+        avaliacao.setProjeto(projeto);
+        avaliacao.setAgente(agente);
+        avaliacao.setId(id);
 
-        if(agenteId != null){
+        super.persist(avaliacao);
 
-            agenteDAO = new AgenteDAO();
-            Agente theAgente = agenteDAO.findById(agenteId);
+        return this;
 
-            entityToMap.setAgente(theAgente);
-            novoId.setAgenteId(agenteId);
-
-        }
-
-        if(projetoId != null){
-
-            projetoDAO = new ProjetoDAO();
-            Projeto theProjeto = projetoDAO.findById(projetoId);
-
-            entityToMap.setProjeto(theProjeto);
-            novoId.setProjetoId(projetoId);
-            theProjeto.setAvaliacao(entityToMap);
-        }
-
-        novoId.setProjetoId(dto.getProjetoId());
-
-
-        return entityToMap;
     }
+
+    //    @Override
+//    protected Avaliacao map(Avaliacao entityToMap, DTO entityDTO) {
+//
+//        AvaliacaoDTO dto = (AvaliacaoDTO) entityDTO;
+//
+//        AvaliacaoId novoId = entityToMap.getId();
+//
+//        Long agenteId = dto.getAgenteId();
+//        Long projetoId = dto.getProjetoId();
+//
+//        if(agenteId != null){
+//
+//            agenteDAO = new AgenteDAO();
+//            Agente theAgente = agenteDAO.findById(agenteId);
+//
+//            entityToMap.setAgente(theAgente);
+//            novoId.setAgenteId(agenteId);
+//
+//        }
+//
+//        if(projetoId != null){
+//
+//            projetoDAO = new ProjetoDAO();
+//            Projeto theProjeto = projetoDAO.findById(projetoId);
+//
+//            entityToMap.setProjeto(theProjeto);
+//            novoId.setProjetoId(projetoId);
+//            theProjeto.setAvaliacao(entityToMap);
+//        }
+//
+//        novoId.setProjetoId(dto.getProjetoId());
+//
+//
+//        return entityToMap;
+//    }
 
     public Avaliacao findById(AvaliacaoId id){
         return entityManager.find(Avaliacao.class, id);
     }
 
     /**
-     * Serão feitos 2 testes:
+     * testes:
      *
-     * 1° Mudar apenas a chave primária. - testando - erro => duplicate key value
-     * 2 ° Mudar chave primaria Embedded tbm, e os objetos agente e projeto - pass
+     * 1 ° change pk. - failed erro => duplicate key value
+     * 2 ° change pk Embedded as well agente object and others...- pass - not modifict cause JPA
      *
-     *  @param avaliacaoId
-     * @param avaliacaoIdDTO
+     *  @param //avaliacaoId
+     * @param //avaliacaoIdDTO
      * @return
      */
-    public DAO<Avaliacao> updateById(AvaliacaoId avaliacaoId, AvaliacaoDTO avaliacaoIdDTO) {
+//    public DAO<Avaliacao> updateById(AvaliacaoId avaliacaoId, AvaliacaoDTO avaliacaoIdDTO) {
+//
+//        Avaliacao av = findById(avaliacaoId);
+//        System.out.println(av);
+////        Avaliacao novoId = map(av, avaliacaoIdDTO);
+//            this.map(av, avaliacaoIdDTO);
+//        System.out.println(av);
+//        super.update(av);
+//
+//        return this;
+//
+//    }
 
-        Avaliacao av = findById(avaliacaoId);
-        System.out.println(av);
-//        Avaliacao novoId = map(av, avaliacaoIdDTO);
-            this.map(av, avaliacaoIdDTO);
-        System.out.println(av);
-        super.update(av);
+    public DAO<Avaliacao> updateById(Long agenteId, Long projetoId, DTO<Avaliacao> avaliacaoDTO){
+
+        AvaliacaoId id = new AvaliacaoId();
+        id.setProjetoId(projetoId);
+        id.setAgenteId(agenteId);
+
+        Avaliacao avaliacao = findById(id);
+        Avaliacao updatedAvaliacao = this.map(avaliacao, avaliacaoDTO);
+
+        openTransaction();
+        super.update(updatedAvaliacao);
 
         return this;
 
     }
 
+    @Override
+    protected Avaliacao map(Avaliacao entityToMap, DTO entityDTO) {
 
+        AvaliacaoDTO dto = (AvaliacaoDTO) entityDTO;
+        entityToMap.setDeferido(dto.getDeferido());
+        entityToMap.setValor(dto.getValor());
+
+        return entityToMap;
+
+    }
 }

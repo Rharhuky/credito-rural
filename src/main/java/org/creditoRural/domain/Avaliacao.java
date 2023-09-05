@@ -1,10 +1,11 @@
 package org.creditoRural.domain;
 
 import jakarta.persistence.*;
+import jdk.jfr.BooleanFlag;
 
 @Entity
 @Table(name = "avaliacoes")
-public class Avaliacao {
+public class Avaliacao extends Entidade {
 
     @EmbeddedId
     private AvaliacaoId id;
@@ -19,12 +20,19 @@ public class Avaliacao {
 
     private Double valor;
 
-    public Avaliacao(Agente agente, Projeto projeto) {
+    @BooleanFlag
+    private Boolean deferido;
+
+
+    public Avaliacao(Agente agente, Projeto projeto, Double valor, boolean deferido) {
         this.agente = agente;
         this.projeto = projeto;
+        this.valor = valor;
+        this.deferido = deferido;
     }
 
     public Avaliacao() {
+        setDeferido(false);
     }
 
     public AvaliacaoId getId() {
@@ -56,16 +64,28 @@ public class Avaliacao {
     }
 
     public void setValor(Double valor) {
+        if(argIsNull(valor))
+            return;
         this.valor = valor;
+    }
+
+    public boolean isDeferido() {
+        return deferido;
+    }
+
+    public void setDeferido(boolean deferido) {
+        if(argIsNull(deferido))
+            return;
+        this.deferido = deferido;
     }
 
     @Override
     public String toString() {
         return "Avaliacao{" +
-                "id=" + id +
-                ", agente=" + agente +
+                "agente=" + agente +
                 ", projeto=" + projeto +
                 ", valor=" + valor +
+                ", deferido=" + deferido +
                 '}';
     }
 }

@@ -21,20 +21,19 @@ public class Propriedade extends Entidade {
     @Column(nullable = false)
     private String nome;
 
+    @Column(nullable = false)
+    @Cep
+    private String cep;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pessoa_id" )
     private Pessoa pessoa;
 
-    @OneToMany(mappedBy = "propriedade", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "propriedade", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Bem> bens = new ArrayList<>();
 
     @OneToMany(mappedBy = "propriedade", cascade = CascadeType.ALL)
     private List<Projeto> projetos = new ArrayList<>();
-
-
-    @Column(nullable = false)
-    @Cep
-    private String cep;
 
     public Propriedade() {}
 
@@ -133,9 +132,8 @@ public class Propriedade extends Entidade {
     public String toString() {
         return "Propriedade{" +
                 "id=" + id +
-                ", regiao='" + regiao + '\'' +
+                ", regiao='" + regiao + '\n' +
                 ", nome='" + nome + '\'' +
-                ", pessoa=" + pessoa +
                 ", bens=" + bens +
                 ", cep='" + cep + '\'' +
                 '}';

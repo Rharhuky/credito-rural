@@ -4,7 +4,9 @@ import org.creditoRural.domain.DTO.DTO;
 import org.creditoRural.domain.DTO.PropriedadeDTO;
 import org.creditoRural.domain.Pessoa;
 import org.creditoRural.domain.Propriedade;
+import org.creditoRural.domain.enums.TipoAtividade;
 
+import java.util.List;
 import java.util.Objects;
 
 public class PropriedadeDAO extends DAO<Propriedade>{
@@ -17,7 +19,7 @@ public class PropriedadeDAO extends DAO<Propriedade>{
 
     @Override
     public DAO<Propriedade> updateById(Long id, DTO<Propriedade> anotherEntity) {
-
+        openTransaction();
         Propriedade propriedade = super.findById(id);
         detach(propriedade);
         Propriedade propriedadeUpdated = this.map(propriedade, anotherEntity);
@@ -80,6 +82,18 @@ public class PropriedadeDAO extends DAO<Propriedade>{
 
         super.persist(propriedade);
         return this;
+
+    }
+
+    public List<Propriedade> findPropriedadesByPessoaCPF(String cpf){
+
+        return super.query("findPropriedadesByPessoaCPF", "cpf", cpf);
+
+    }
+
+    public List<Propriedade> findPropriedadesByAtividade(TipoAtividade tipoAtividade){
+
+        return super.query("findPropriedadesByAtividade", "tipoAtividade", tipoAtividade);
 
     }
 

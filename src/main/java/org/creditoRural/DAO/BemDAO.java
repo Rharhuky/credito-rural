@@ -5,6 +5,9 @@ import org.creditoRural.domain.DTO.BemDTO;
 import org.creditoRural.domain.DTO.DTO;
 import org.creditoRural.domain.Propriedade;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * DAO para classe Bem.
  */
@@ -20,7 +23,7 @@ public class BemDAO extends DAO<Bem> {
 
     @Override
     public DAO<Bem> updateById(Long id, DTO<Bem> anotherEntity) {
-
+        openTransaction();
         Bem bem = super.findById(id);
         super.detach(bem);
         Bem bemAtualizado = map(bem, anotherEntity);
@@ -65,11 +68,17 @@ public class BemDAO extends DAO<Bem> {
             bem.setPropriedade(propriedade);
 
             super.persist(bem)
-                    .commitTransaction()
                     .closeConnexion();
 
         return this;
 
     }
+
+    public List<Bem> findByPropriedadeId(Long id){
+
+        return super.query("findBensByPropriedadeId", "id", id);
+
+    }
+
 
 }

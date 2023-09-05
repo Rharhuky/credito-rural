@@ -18,17 +18,23 @@ public class Bem extends Entidade{
     @Column
     private Double preco;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "propriedade_id")
     private Propriedade propriedade;
+
+    @Transient
+    private Boolean actived;
 
     public Bem(TipoBem tipo, Double preco, Propriedade propriedade) {
         this.tipo = tipo;
         this.preco = preco;
         this.propriedade = propriedade;
+        this.actived = true;
     }
 
-    public Bem() {}
+    public Bem() {
+        setActived(true);
+    }
 
     public Long getId() {
         return id;
@@ -64,8 +70,21 @@ public class Bem extends Entidade{
 
     public void setPropriedade(Propriedade propriedade) {
         if(argIsNull(propriedade))
-            return;
+            if(actived)
+                return;
+            else
+                this.propriedade = propriedade; // = null
         this.propriedade = propriedade;
+    }
+
+    public Boolean getActived() {
+        return actived;
+    }
+
+    public void setActived(Boolean actived) {
+        if(argIsNull(actived))
+            return;
+        this.actived = actived;
     }
 
     @Override

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings version="3.0"
+                 xmlns="https://jakarta.ee/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence/orm https://jakarta.ee/xml/ns/persistence/orm_2_1.xsd">
+
+    <named-query name="findPessoaByCPF">
+        <query>
+            SELECT p FROM Pessoa p
+            JOIN FETCH p.propriedades propriedade
+            WHERE p.cpf = :cpf
+        </query>
+    </named-query>
+
+    <named-query name="findBensByPropriedadeId">
+        <query>
+            SELECT b FROM Bem b
+            WHERE b.propriedade.id = :id
+        </query>
+    </named-query>
+
+    <named-query name="getPropriedadeWithBem">
+        <query>
+            SELECT p FROM Propriedade p
+            JOIN FETCH p.bens
+            WHERE p.pessoa = :pessoa
+        </query>
+    </named-query>
+
+    <named-query name="findPropriedadesByPessoaCPF">
+        <query>
+            SELECT p FROM Propriedade p
+            WHERE p.pessoa.cpf = :cpf
+        </query>
+    </named-query>
+
+    <named-query name="findPropriedadesByAtividade">
+        <query>
+            SELECT p FROM Propriedade p
+            INNER JOIN Projeto proj ON proj.propriedade = p
+            WHERE proj.atividade.tipoAtividade = :tipoAtividade
+        </query>
+    </named-query>
+
+
+</entity-mappings>

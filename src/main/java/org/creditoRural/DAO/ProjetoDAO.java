@@ -5,6 +5,7 @@ import org.creditoRural.domain.DTO.DTO;
 import org.creditoRural.domain.DTO.ProjetoDTO;
 import org.creditoRural.domain.Projeto;
 import org.creditoRural.domain.Propriedade;
+import org.creditoRural.domain.enums.TipoAtividade;
 import org.creditoRural.exceptions.EntidadeNaoExisteException;
 
 import java.util.Objects;
@@ -22,9 +23,9 @@ public class ProjetoDAO extends DAO<Projeto> {
     public DAO<Projeto> updateById(Long id, DTO<Projeto> anotherEntity) {
 
         Projeto projeto = super.findById(id);
-        detach(projeto);
-        Projeto projetoAtualizado = this.map(projeto, anotherEntity);
-        update(projetoAtualizado);
+        this.map(projeto, anotherEntity);
+        openTransaction();
+        update(projeto);
         return this;
     }
 
@@ -76,8 +77,15 @@ public class ProjetoDAO extends DAO<Projeto> {
         propriedade.adicionarProjeto(projeto);
         projeto.setPropriedade(propriedade);
 
-        super.persist(projeto)
-                .commitTransaction();
+        super.persist(projeto);
+
+        return this;
+
+    }
+
+    public DAO<Projeto> findByTipoAtividade(TipoAtividade tipoAtividade) {
+
+        //query TODO
 
         return this;
 

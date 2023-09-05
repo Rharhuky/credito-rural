@@ -2,7 +2,6 @@ package org.creditoRural.domain;
 
 import jakarta.persistence.*;
 import org.creditoRural.exceptions.EntidadeExistenteException;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +16,11 @@ public class Pessoa extends Entidade {
 
     private String nome;
 
-    @Column(name = "data_nascimento", nullable = false)
+    @Column(name = "data_nascimento")
+//    @Past
     private LocalDate dataNascimento;
 
-    @Column(name = "nome_conjugue", nullable = false)
+    @Column(name = "nome_conjugue")
     private String nomeConjugue;
 
     @Column(nullable = false)
@@ -33,7 +33,7 @@ public class Pessoa extends Entidade {
     @Column
     private String celular;
 
-    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Propriedade> propriedades = new ArrayList<>();
 
 
@@ -146,6 +146,7 @@ public class Pessoa extends Entidade {
                 ", profissao='" + profissao + '\'' +
                 ", cpf='" + cpf + '\'' +
                 ", celular='" + celular + '\'' +
+                ",propriedades='" + propriedades + '\'' +
                 '}';
     }
 }
