@@ -38,7 +38,7 @@ public class TestesEntidadesDAO {
 //        atualizarBem();
 //        atualizarAvaliacao();
 //
-        deletarBens();    //TODO - DONE
+//        deletarBens();    //TODO - DONE
 //        deletarAgentes(); TODO - DONE
 //        deletarProjeto(); TODO - DONE
 //        deletarPessoa();  // TODO - DONE
@@ -188,7 +188,7 @@ public class TestesEntidadesDAO {
         PessoaDAO pessoaDAO = new PessoaDAO();
         pessoaDAO.openConnexion();
 
-        Pessoa p = pessoaDAO.findPessoaByCPF("10301504");
+        Pessoa p = pessoaDAO.findPessoaByCPF("20301504");
         System.out.println(p);
 
         pessoaDAO.closeConnexion();

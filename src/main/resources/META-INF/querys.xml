@@ -7,7 +7,6 @@
     <named-query name="findPessoaByCPF">
         <query>
             SELECT p FROM Pessoa p
-            JOIN FETCH p.propriedades propriedade
             WHERE p.cpf = :cpf
         </query>
     </named-query>
